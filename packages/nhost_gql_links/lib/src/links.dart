@@ -118,25 +118,24 @@ Link webSocketLinkForNhost(
   final wsEndpointUri =
       uri.replace(scheme: uri.scheme == 'https' ? 'wss' : 'ws');
 
-  WebSocketChannel? channel;
   final channelGenerator = testChannelGenerator != null
-      ? (() async => channel = await testChannelGenerator()) as ChannelGenerator
+      ? (() async => await testChannelGenerator()) as ChannelGenerator
       : () {
           log.finest('Creating GraphQL web socket, uri=$wsEndpointUri');
-          return channel = WebSocketChannel.connect(wsEndpointUri,
+          return WebSocketChannel.connect(wsEndpointUri,
               protocols: ['graphql-ws']);
         };
+
+  late final WebSocketLink webSocketLink;
 
   // If authentication state changes, we reconnect the socket, which will also
   // re-evaluate the initialPayload to provide the auth header if available.
   nhostAuth.addTokenChangedCallback(() {
-    if (channel != null) {
-      log.finest('Reconnecting GraphQL web socket as result of token change');
-      channel?.sink.close(webSocketNormalCloseCode, 'Auth changed');
-    }
+    log.finest('Reconnecting GraphQL web socket as result of token change');
+    webSocketLink.reconnect();
   });
 
-  final webSocketLink = WebSocketLink(
+  webSocketLink = WebSocketLink(
     /* url — provided via channelGenerator */ null,
     autoReconnect: true,
     channelGenerator: channelGenerator,
