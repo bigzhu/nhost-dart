@@ -89,7 +89,8 @@ class NhostAuthClient implements HasuraAuthClient {
   /// The service's methods cannot be called past this point.
   @override
   void close() {
-    _apiClient.close();
+    // 不要关闭 http client
+    // _apiClient.close();
     _tokenRefreshTimer?.cancel();
   }
 
