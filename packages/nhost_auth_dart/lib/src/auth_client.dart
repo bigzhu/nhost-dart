@@ -71,9 +71,7 @@ class NhostAuthClient implements HasuraAuthClient {
   @override
   AuthenticationState get authenticationState {
     if (_loading) return AuthenticationState.inProgress;
-    return _session.session != null
-        ? AuthenticationState.signedIn
-        : AuthenticationState.signedOut;
+    return _session.session != null ? AuthenticationState.signedIn : AuthenticationState.signedOut;
   }
 
   /// The currently logged-in user's Json Web Token, or `null` if
@@ -113,8 +111,7 @@ class NhostAuthClient implements HasuraAuthClient {
   ///
   /// The returned function will remove the callback when called.
   @override
-  UnsubscribeDelegate addAuthStateChangedCallback(
-      AuthStateChangedCallback callback) {
+  UnsubscribeDelegate addAuthStateChangedCallback(AuthStateChangedCallback callback) {
     _authChangedCallbacks.add(callback);
     return () {
       _authChangedCallbacks.removeWhere((element) => element == callback);
@@ -130,12 +127,10 @@ class NhostAuthClient implements HasuraAuthClient {
   ///
   /// The returned function will remove the callback when called.
   @override
-  UnsubscribeDelegate addSessionRefreshFailedCallback(
-      SessionRefreshFailedCallback callback) {
+  UnsubscribeDelegate addSessionRefreshFailedCallback(SessionRefreshFailedCallback callback) {
     _sessionRefreshFailedCallbacks.add(callback);
     return () {
-      _sessionRefreshFailedCallbacks
-          .removeWhere((element) => element == callback);
+      _sessionRefreshFailedCallbacks.removeWhere((element) => element == callback);
     };
   }
 
@@ -185,8 +180,7 @@ class NhostAuthClient implements HasuraAuthClient {
   }) async {
     log.finer('Attempting user registration');
 
-    final includeRoleOptions =
-        defaultRole != null || (roles != null && roles.isNotEmpty);
+    final includeRoleOptions = defaultRole != null || (roles != null && roles.isNotEmpty);
     final options = {
       if (metadata != null) 'metadata': metadata,
       if (locale != null) 'locale': locale,
@@ -444,10 +438,7 @@ class NhostAuthClient implements HasuraAuthClient {
   }) async {
     await _apiClient.post(
       '/user/password',
-      jsonBody: {
-        'newPassword': newPassword,
-        if (ticket != null) 'ticket': ticket
-      },
+      jsonBody: {'newPassword': newPassword, if (ticket != null) 'ticket': ticket},
       headers: _session.authenticationHeaders,
     );
   }
@@ -683,13 +674,13 @@ class NhostAuthClient implements HasuraAuthClient {
 
     // Start refresh token interval after logging in.
     log.finest('Creating token refresh timer, duration=$refreshTimerDuration');
-    _tokenRefreshTimer = Timer(
-      refreshTimerDuration,
-      () {
-        log.finest('Refresh timer elapsed');
-        _refreshSession();
-      },
-    );
+    // _tokenRefreshTimer = Timer(
+    //   refreshTimerDuration,
+    //   () {
+    //     log.finest('Refresh timer elapsed');
+    //     _refreshSession();
+    //   },
+    // );
 
     // We're ready!
     _loading = false;
