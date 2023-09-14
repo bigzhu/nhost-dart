@@ -573,6 +573,66 @@ class NhostAuthClient implements HasuraAuthClient {
 
   //#region Token and session Handling
 
+  // 搞一个自己的刷新方法
+  Future<Session> refreshAccessToken() async {
+    log.finest('Session refresh requested');
+
+    final storedRefreshTokenValue = await _authStore.getString(
+      refreshTokenClientStorageKey,
+    );
+
+    final refreshToken = storedRefreshTokenValue;
+
+    // If there's no refresh token, we're all done.
+    if (refreshToken == null) {
+      log.finest('No refresh token. Halting request.');
+      _loading = false;
+      _onAuthStateChanged(authenticationState);
+      throw AuthServiceException(
+        'No refresh token in AuthStore. Cannot authenticate.',
+      );
+    }
+
+    try {
+      // Make refresh token request
+      log.finest('Making session refresh request');
+      // 每次都建立一个新的 httpCLient
+      final apiClient = ApiClient(
+        _apiClient.baseUrl,
+        httpClient: http.Client(),
+      );
+
+      final res = await apiClient.post(
+        '/token',
+        jsonBody: {
+          'refreshToken': refreshToken,
+        },
+        responseDeserializer: Session.fromJson,
+      );
+
+      await setSession(res);
+      _sessionCompleter?.complete(res);
+      return res;
+    } on Exception catch (e, st) {
+      if (e is ApiException && e.statusCode == unauthorizedStatus) {
+        log.finest('Unauthorized refresh token. Forcing signout.');
+        await signOut();
+      }
+
+      log.severe('Exception during token refresh', e, st);
+      _sessionCompleter?.completeError(e, st);
+
+      // Inform subscribers of the failure. If there are none, rethrow the
+      // exception.
+      _onTokenRefreshFailure(e, st);
+      rethrow;
+    } finally {
+      // Release lock
+      _refreshTokenLock = false;
+      _sessionCompleter = null;
+    }
+  }
+
   Future<Session> _refreshSession([String? initRefreshToken]) async {
     log.finest('Session refresh requested');
 
