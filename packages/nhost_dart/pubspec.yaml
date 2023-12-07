@@ -16,13 +16,26 @@ dependencies:
   path: ^1.8.0
 
   #NHOST Package
-  nhost_sdk: ^5.0.0
-  nhost_storage_dart: ^2.0.0
-  nhost_auth_dart: ^2.0.0
-  nhost_functions_dart: ^2.0.0
-  # nhost_graphql_adapter: ^4.0.0
+  nhost_sdk:
+    git:
+      url: https://github.com/bigzhu/nhost-dart
+      path: packages/nhost_sdk
+  nhost_storage_dart:
+    git:
+      url: https://github.com/bigzhu/nhost-dart
+      path: packages/nhost_storage_dart
+  nhost_auth_dart:
+    git:
+      url: https://github.com/bigzhu/nhost-dart
+      path: packages/nhost_auth_dart
+  nhost_functions_dart:
+    git:
+      url: https://github.com/bigzhu/nhost-dart
+      path: packages/nhost_functions_dart
   nhost_graphql_adapter:
-    path: ../nhost_graphql_adapter
+    git:
+      url: https://github.com/bigzhu/nhost-dart
+      path: packages/nhost_graphql_adapter
 dev_dependencies:
   fake_async: ^1.3.1
   graphql: ^5.1.3
