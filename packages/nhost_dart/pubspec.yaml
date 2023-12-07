@@ -20,10 +20,10 @@ dependencies:
   nhost_storage_dart: ^1.1.0
   # nhost_auth_dart: ^1.0.1
   nhost_auth_dart:
-  git:
-    url: https://github.com/bigzhu/nhost-dart
-    path: packages/nhost_auth_dart
-    ref: 78f66142d4b6c86993df9a005fc249885d2b8435
+    git:
+      url: https://github.com/bigzhu/nhost-dart
+      path: packages/nhost_auth_dart
+      ref: 7363bfc092f277a2cc60bd329face31463abf749
   nhost_functions_dart: ^1.0.1
   nhost_graphql_adapter: ^3.0.1
 dev_dependencies:
