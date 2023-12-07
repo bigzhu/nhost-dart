@@ -15,7 +15,10 @@ dependencies:
   flutter:
     sdk: flutter
   #Nhost_dart
-  nhost_dart: ^2.0.0
+  nhost_dart:
+    git:
+      url: https://github.com/bigzhu/nhost-dart
+      path: packages/nhost_dart
 dev_dependencies:
   flutter_test:
     sdk: flutter
