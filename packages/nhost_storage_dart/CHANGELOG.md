@@ -1,3 +1,11 @@
+## 2.0.0
+
+ - Update a dependency to the latest release.
+
+## 1.1.0
+
+ - **FEAT**(nhost-storage): added image transform options to getPresignedUrl (#102).
+
 ## 1.0.1
 
  - added image transform options to getPresignedUrl 

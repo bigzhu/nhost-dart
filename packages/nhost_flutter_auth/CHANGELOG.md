@@ -1,3 +1,11 @@
+## 4.0.0
+
+ - Update a dependency to the latest release.
+
+## 3.0.2
+
+ - Update a dependency to the latest release.
+
 ## 3.0.1
 
  - update nhost_dart to 1.0.1
