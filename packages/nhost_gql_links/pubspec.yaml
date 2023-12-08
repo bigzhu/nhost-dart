@@ -12,10 +12,7 @@ dependencies:
   gql_exec: ^1.0.0
   gql_http_link: ^1.0.1
   gql_link: ^1.0.0
-  gql_websocket_link:
-    git:
-      url: https://github.com/bigzhu/gql
-      path: links/gql_websocket_link
+  gql_websocket_link: ^2.0.0
   gql: ^1.0.0
   http: ^1.1.0
   logging: ^1.1.0
